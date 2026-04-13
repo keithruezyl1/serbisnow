@@ -87,8 +87,9 @@ export const CsvLoader = ({ onLoaded }: { onLoaded: (cards: Card[]) => void }) =
 
   return (
     <div className="loader">
-      <h1>StudySystem</h1>
-      <p>Start with the built-in deck, or upload your own CSV.</p>
+      <h1>ServisNaw CSA Reviewer</h1>
+      <p>Start with the CSA Reviewer deck, </p>
+      <p> or upload your own CSV.</p>
       <p>CSV requires columns: <strong>id</strong>, <strong>term</strong>, <strong>definition</strong>.</p>
 
       <div className="loader-actions">

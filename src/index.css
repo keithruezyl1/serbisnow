@@ -213,35 +213,33 @@ button:disabled {
 }
 
 .progress-pills {
-  display: flex;
-  gap: 6px;
-  flex-wrap: nowrap;
-  justify-content: center;
+  /* One row: equal-width segments for any count (session queue), scales on narrow viewports */
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2px, 1.2vw, 6px);
   width: min(680px, 100%);
-  padding: 0 8px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
-}
-
-.progress-pills::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  max-width: 100%;
+  padding: 0 clamp(4px, 2vw, 8px);
+  box-sizing: border-box;
 }
 
 .progress-pill {
-  width: 24px;
-  height: 8px;
+  width: 100%;
+  min-width: 0;
+  height: clamp(6px, 1.8vw, 8px);
   border-radius: 999px;
   opacity: 0.6;
-  transition: all 0.2s ease;
-  flex: 0 0 auto;
+  transition: opacity 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .progress-pill.current {
   opacity: 1;
-  outline: 2px solid rgba(255,255,255,0.95);
-  box-shadow: 0 0 10px rgba(255,255,255,0.7);
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.95),
+    0 0 10px rgba(255, 255, 255, 0.55);
+  transform: scaleY(1.15);
 }
 
 /* Flashcard */

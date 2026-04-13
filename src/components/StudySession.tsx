@@ -7,6 +7,7 @@ import { ProgressPills } from './ProgressPills';
 
 export const StudySession = ({ state, updateState }: { state: any, updateState: any }) => {
   const [showModal, setShowModal] = useState(false);
+  const [answerMode, setAnswerMode] = useState(false);
 
   const totalCards = state.parsedCards.length;
   const completedCount = state.completedIds.length;
@@ -32,7 +33,13 @@ export const StudySession = ({ state, updateState }: { state: any, updateState: 
         cardRatings: {} 
     });
     setShowModal(false);
+    setAnswerMode(false);
   };
+
+  const currentId = state.activeQueue.length > 0 ? state.activeQueue[0].id : '';
+  const sessionCompletedIds = (state.sessionInitialIds || []).filter((id: string) => state.completedIds.includes(id));
+  const activeIds = state.activeQueue.map((c: any) => c.id);
+  const displayIds = [...sessionCompletedIds, ...activeIds];
 
   const handleRate = (rating: 1 | 2 | 3 | 4) => {
     if (state.activeQueue.length === 0) return;
@@ -56,17 +63,13 @@ export const StudySession = ({ state, updateState }: { state: any, updateState: 
         completedIds: [...state.completedIds, current.id],
         cardRatings: newCardRatings
       });
+      setAnswerMode(false);
       return;
     }
 
     updateState({ ...state, activeQueue: queue, cardRatings: newCardRatings });
+    setAnswerMode(false);
   };
-
-  const currentId = state.activeQueue.length > 0 ? state.activeQueue[0].id : '';
-  const sessionCompletedIds = (state.sessionInitialIds || []).filter((id: string) => state.completedIds.includes(id));
-  const activeIds = state.activeQueue.map((c: any) => c.id);
-  const displayIds = [...sessionCompletedIds, ...activeIds];
-  const [answerMode, setAnswerMode] = useState(false);
 
   return (
     <div className="study">
