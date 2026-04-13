@@ -86,45 +86,23 @@ export const CsvLoader = ({ onLoaded }: { onLoaded: (cards: Card[]) => void }) =
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', padding: 40, textAlign: 'center' }}>
-      <h1 style={{ fontSize: '2.5rem', marginBottom: 20 }}>Welcome to StudySystem</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 16 }}>Start with the built-in deck, or upload your own CSV.</p>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 28 }}>CSV requires columns: id, term, definition.</p>
+    <div className="loader">
+      <h1>StudySystem</h1>
+      <p>Start with the built-in deck, or upload your own CSV.</p>
+      <p>CSV requires columns: <strong>id</strong>, <strong>term</strong>, <strong>definition</strong>.</p>
 
-      <button
-        onClick={handleUseBuiltInDeck}
-        disabled={loading}
-        style={{
-          padding: '14px 28px',
-          backgroundColor: 'rgba(255,255,255,0.12)',
-          border: '1px solid rgba(255,255,255,0.25)',
-          borderRadius: 12,
-          cursor: loading ? 'not-allowed' : 'pointer',
-          fontSize: '1.05rem',
-          color: 'white',
-          transition: 'all 0.2s',
-          marginBottom: 18,
-          width: 280
-        }}
-      >
-        {loading ? 'Loading…' : 'Use built-in deck'}
-      </button>
-      
-      <label style={{
-        padding: '16px 32px',
-        backgroundColor: 'var(--card-bg)',
-        border: '2px dashed var(--outline-default)',
-        borderRadius: 12,
-        cursor: 'pointer',
-        fontSize: '1.2rem',
-        color: 'white',
-        transition: 'all 0.2s'
-      }}>
-        Choose CSV File
-        <input type="file" accept=".csv" onChange={handleFile} style={{ display: 'none' }} disabled={loading} />
-      </label>
+      <div className="loader-actions">
+        <button onClick={handleUseBuiltInDeck} disabled={loading} className="btn btn-primary">
+          {loading ? 'Loading…' : 'Use built-in deck'}
+        </button>
 
-      {error && <div style={{ marginTop: 20, color: 'var(--outline-incorrect)' }}>{error}</div>}
+        <label className="file-drop">
+          Choose CSV File
+          <input type="file" accept=".csv" onChange={handleFile} style={{ display: 'none' }} disabled={loading} />
+        </label>
+
+        {error && <div style={{ color: 'var(--outline-incorrect)' }}>{error}</div>}
+      </div>
     </div>
   );
 };

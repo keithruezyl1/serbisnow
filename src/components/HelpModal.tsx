@@ -2,26 +2,15 @@ import { X } from 'lucide-react';
 
 export const HelpModal = ({ onClose }: { onClose: () => void }) => {
   return (
-    <div style={{
-      position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, 
-      backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', 
-      justifyContent: 'center', zIndex: 1000
-    }}>
-      <div style={{
-        backgroundColor: 'var(--card-bg)', border: '1px solid var(--outline-default)',
-        borderRadius: 16, padding: 32, maxWidth: 600, width: '90%', position: 'relative',
-        color: 'white', boxShadow: '0 8px 32px rgba(0,0,0,0.5)'
-      }}>
-        <button 
-          onClick={onClose}
-          style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', color: 'white', cursor: 'pointer', opacity: 0.7 }}
-        >
+    <div className="overlay" role="dialog" aria-modal="true" aria-label="Help & Instructions">
+      <div className="modal" style={{ borderColor: 'rgba(252, 211, 77, 0.35)' }}>
+        <button onClick={onClose} className="btn icon-btn close-btn" aria-label="Close help">
           <X size={24} />
         </button>
 
-        <h2 style={{ marginTop: 0, marginBottom: 24, fontSize: '1.5rem' }}>How to Use This Tool</h2>
+        <h2 style={{ marginBottom: 14, fontSize: '1.35rem' }}>How to use</h2>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, lineHeight: 1.6 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 18, lineHeight: 1.55, color: 'rgba(255,255,255,0.92)' }}>
           <div>
             <h3 style={{ margin: '0 0 8px 0', color: 'var(--outline-default)', fontSize: '1.2rem' }}>Flipping Cards</h3>
             <p style={{ margin: 0, opacity: 0.9 }}>Click the card or press the <strong>Spacebar</strong> to flip between the question and the hidden answer.</p>

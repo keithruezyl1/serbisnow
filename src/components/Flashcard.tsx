@@ -72,35 +72,24 @@ export const Flashcard = ({ card, onRate, initialAnswerMode = false, onAnswerMod
   if (answerCheckState === 'incorrect') outlineColor = 'var(--outline-incorrect)';
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: 640 }}>
+    <div className="card-shell">
       <div 
         onClick={() => !isRevealed && !isAnswerModeOpen && executeFlip()}
+        className="flashcard"
         style={{
-          width: '100%',
-          minHeight: 300,
-          backgroundColor: 'var(--card-bg)',
-          borderRadius: 16,
           border: `3px solid ${outlineColor}`,
-          padding: '40px 32px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
           cursor: isRevealed ? 'default' : 'pointer',
-          textAlign: 'center',
           transition: 'transform 0.15s ease-in-out',
           transform: isFlipping ? 'rotateX(90deg)' : 'rotateX(0deg)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
         }}
       >
-        <h2 style={{ fontSize: '1.25rem', margin: 0, fontWeight: 500, lineHeight: 1.5, opacity: isRevealed ? 0.7 : 1 }}>
+        <h2 style={{ opacity: isRevealed ? 0.72 : 1 }}>
           {card.back}
         </h2>
         
         {isRevealed && (
-          <div style={{ marginTop: 24, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.1)', width: '100%' }}>
-            <p style={{ fontSize: '2.5rem', color: 'var(--outline-default)', margin: 0, fontWeight: 'bold' }}>
+          <div className="answer">
+            <p>
               {card.front}
             </p>
           </div>
@@ -113,23 +102,24 @@ export const Flashcard = ({ card, onRate, initialAnswerMode = false, onAnswerMod
                 setIsAnswerModeOpen(true); 
                 if (onAnswerModeChange) onAnswerModeChange(true); 
             }}
-            style={{ position: 'absolute', bottom: 16, right: 16, opacity: 0.6, padding: 8 }}
+            className="btn icon-btn kbd-toggle"
             title="Open Typed Answer Mode"
+            aria-label="Open typed answer mode"
           >
             <Keyboard size={24} />
           </button>
         )}
       </div>
 
-      <div style={{ height: 80, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 24, marginBottom: 16 }}>
+      <div className="helper-row">
         {isRevealed ? (
           <RatingControls onRate={onRate} />
         ) : (
-          <span style={{ opacity: 0.5 }}>Press Space or click card to reveal</span>
+          <span>Tap to reveal</span>
         )}
       </div>
 
-      <div style={{ height: 60, width: '100%', display: 'flex', justifyContent: 'center' }}>
+      <div style={{ minHeight: 56, width: '100%', display: 'flex', justifyContent: 'center', padding: '0 8px' }}>
         {isAnswerModeOpen && !isRevealed && <TypedAnswerInput onCheck={handleCheckAnswer} />}
         {answerCheckState === 'correct' && isRevealed && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 24px', backgroundColor: 'rgba(74, 222, 128, 0.1)', border: '2px solid var(--outline-correct)', color: 'var(--outline-correct)', borderRadius: 24, fontWeight: 'bold' }}>

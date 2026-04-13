@@ -69,8 +69,8 @@ export const StudySession = ({ state, updateState }: { state: any, updateState: 
   const [answerMode, setAnswerMode] = useState(false);
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-      <div style={{ position: 'absolute', top: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', zIndex: 10 }}>
+    <div className="study">
+      <div className="study-header">
         <ProgressHeader 
           remainingInQueue={state.activeQueue.length} 
           completedCount={completedCount} 

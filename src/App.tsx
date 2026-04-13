@@ -52,20 +52,18 @@ function App() {
   }
 
   return (
-    <div className="app-container" style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%', flex: 1, position: 'relative' }}>
-      <div style={{ position: 'absolute', top: 16, right: 16, display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center', zIndex: 100 }}>
-        <button 
-          onClick={handleReset}
-          style={{ background: 'rgba(255,255,255,0.1)', padding: '8px 16px', borderRadius: 4, color: 'white', cursor: 'pointer', border: '1px solid rgba(255,255,255,0.2)' }}
-        >
-          Reset All
+    <div className="app-shell">
+      <div className="top-actions">
+        <button onClick={handleReset} className="btn">
+          Reset
         </button>
         <button
           onClick={() => setShowHelp(true)}
-          style={{ background: 'none', border: 'none', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', opacity: 0.8, padding: 0 }}
+          className="btn icon-btn"
           title="Help & Instructions"
+          aria-label="Help & Instructions"
         >
-          <HelpCircle size={24} />
+          <HelpCircle size={22} />
         </button>
       </div>
       {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
