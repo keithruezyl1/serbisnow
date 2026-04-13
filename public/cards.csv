@@ -1,0 +1,4 @@
+id,term,definition,scope
+1,What is localStorage?,A browser key-value store that persists between sessions.,Web
+2,What is GitHub Pages?,A static site hosting service for files in a GitHub repo.,Deploy
+3,What does Vite do?,A fast dev server and bundler for modern web apps.,Tooling
