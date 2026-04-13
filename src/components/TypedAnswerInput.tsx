@@ -20,16 +20,8 @@ export const TypedAnswerInput = ({ onCheck }: { onCheck: (v: string) => void }) 
         }
       }}
       placeholder="Type your answer and press Enter..."
+      className="typed-input"
       style={{
-        width: '100%',
-        minWidth: 400,
-        padding: '16px 20px',
-        borderRadius: 8,
-        border: '2px solid rgba(255,255,255,0.3)',
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        color: 'white',
-        fontSize: '1.1rem',
-        outline: 'none',
         transition: 'border-color 0.2s',
       }}
       onFocus={e => (e.target.style.borderColor = 'var(--outline-default)')}
