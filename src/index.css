@@ -169,13 +169,16 @@ button:disabled {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 20px 0;
+  /* Reserve space so fixed top-actions + sticky header don't overlap content */
+  padding-top: 110px;
 }
 
 .study-header {
   position: sticky;
-  top: calc(10px + env(safe-area-inset-top));
+  /* Sit below the fixed top-actions bar */
+  top: calc(60px + env(safe-area-inset-top));
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -183,6 +186,7 @@ button:disabled {
   gap: 10px;
   z-index: 20;
   pointer-events: none;
+  margin-bottom: 14px;
 }
 
 .study-header > * {
@@ -211,9 +215,18 @@ button:disabled {
 .progress-pills {
   display: flex;
   gap: 6px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
+  width: min(680px, 100%);
   padding: 0 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+}
+
+.progress-pills::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 .progress-pill {
@@ -222,6 +235,7 @@ button:disabled {
   border-radius: 999px;
   opacity: 0.6;
   transition: all 0.2s ease;
+  flex: 0 0 auto;
 }
 
 .progress-pill.current {
@@ -241,7 +255,7 @@ button:disabled {
 
 .flashcard {
   width: 100%;
-  min-height: min(56vh, 420px);
+  min-height: clamp(260px, 46svh, 420px);
   background-color: rgba(43, 27, 61, 0.86);
   border-radius: var(--radius-lg);
   padding: 26px 18px;
@@ -374,7 +388,31 @@ button:disabled {
     justify-content: space-between;
   }
 
+  .study {
+    padding-top: 104px;
+  }
+
+  .study-header {
+    top: calc(56px + env(safe-area-inset-top));
+  }
+
+  .flashcard {
+    padding: 22px 16px;
+  }
+
   .rating {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 521px) {
+  /* On larger screens, bring back a more centered feel */
+  .study {
+    justify-content: center;
+    padding-top: 20px;
+  }
+
+  .study-header {
+    top: calc(10px + env(safe-area-inset-top));
   }
 }
