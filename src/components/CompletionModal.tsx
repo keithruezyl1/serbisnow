@@ -2,10 +2,21 @@ interface CompletionModalProps {
   allDone: boolean;
   completedCount: number;
   totalCount: number;
+  batchElapsedMs: number;
   onNext: () => void;
 }
 
-export const CompletionModal = ({ allDone, completedCount, totalCount, onNext }: CompletionModalProps) => {
+const formatDuration = (ms: number) => {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  const s = totalSeconds % 60;
+  const totalMinutes = Math.floor(totalSeconds / 60);
+  const m = totalMinutes % 60;
+  const h = Math.floor(totalMinutes / 60);
+  const pad2 = (n: number) => String(n).padStart(2, '0');
+  return h > 0 ? `${h}:${pad2(m)}:${pad2(s)}` : `${m}:${pad2(s)}`;
+};
+
+export const CompletionModal = ({ allDone, completedCount, totalCount, batchElapsedMs, onNext }: CompletionModalProps) => {
   const progress = totalCount > 0 ? Math.max(0, Math.min(1, completedCount / totalCount)) : 0;
   const size = 148;
   const stroke = 14;
@@ -60,6 +71,10 @@ export const CompletionModal = ({ allDone, completedCount, totalCount, onNext }:
 
         <p style={{ fontSize: '1.05rem', margin: '14px 0 18px', color: 'var(--text-secondary)' }}>
           Ready to start the next batch?
+        </p>
+
+        <p style={{ fontSize: '1.02rem', margin: '-8px 0 18px', opacity: 0.8 }}>
+          Total time: {formatDuration(batchElapsedMs)}
         </p>
         
         {!allDone ? (

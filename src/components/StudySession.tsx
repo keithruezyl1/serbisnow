@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import type { Card } from '../types';
 import { Flashcard } from './Flashcard';
 import { ProgressHeader } from './ProgressHeader';
@@ -8,10 +8,27 @@ import { ProgressPills } from './ProgressPills';
 export const StudySession = ({ state, updateState }: { state: any, updateState: any }) => {
   const [showModal, setShowModal] = useState(false);
   const [answerMode, setAnswerMode] = useState(false);
+  const [batchElapsedMs, setBatchElapsedMs] = useState(0);
+  const isTimingRef = useRef(false);
+  const timingStartedAtRef = useRef<number | null>(null);
 
   const totalCards = state.parsedCards.length;
   const completedCount = state.completedIds.length;
   const unfinishedCards = state.parsedCards.filter((c: Card) => !state.completedIds.includes(c.id));
+
+  const pauseTimer = useCallback(() => {
+    if (!isTimingRef.current || timingStartedAtRef.current === null) return;
+    const delta = Date.now() - timingStartedAtRef.current;
+    setBatchElapsedMs((prev) => prev + Math.max(0, delta));
+    isTimingRef.current = false;
+    timingStartedAtRef.current = null;
+  }, []);
+
+  const resumeTimer = useCallback(() => {
+    if (isTimingRef.current) return;
+    isTimingRef.current = true;
+    timingStartedAtRef.current = Date.now();
+  }, []);
 
   useEffect(() => {
     if (state.activeQueue.length === 0 && !showModal) {
@@ -23,7 +40,33 @@ export const StudySession = ({ state, updateState }: { state: any, updateState: 
     }
   }, [state.activeQueue.length, showModal, completedCount, unfinishedCards.length]);
 
+  // Track batch time only while user is actually on this page (tab visible).
+  useEffect(() => {
+    const shouldRun = state.activeQueue.length > 0 && !showModal && document.visibilityState === 'visible';
+    if (shouldRun) resumeTimer();
+    else pauseTimer();
+
+    const handleVisibility = () => {
+      const should = state.activeQueue.length > 0 && !showModal && document.visibilityState === 'visible';
+      if (should) resumeTimer();
+      else pauseTimer();
+    };
+
+    window.addEventListener('focus', handleVisibility);
+    window.addEventListener('blur', pauseTimer);
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => {
+      window.removeEventListener('focus', handleVisibility);
+      window.removeEventListener('blur', pauseTimer);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      pauseTimer();
+    };
+  }, [pauseTimer, resumeTimer, showModal, state.activeQueue.length]);
+
   const startNext20 = () => {
+    setBatchElapsedMs(0);
+    isTimingRef.current = false;
+    timingStartedAtRef.current = null;
     const shuffled = [...unfinishedCards].sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, 20).map(c => ({ ...c, okCount: 0 }));
     updateState({ 
@@ -103,6 +146,7 @@ export const StudySession = ({ state, updateState }: { state: any, updateState: 
           allDone={unfinishedCards.length === 0}
           completedCount={completedCount}
           totalCount={totalCards}
+          batchElapsedMs={batchElapsedMs}
           onNext={startNext20}
         />
       )}
