@@ -169,7 +169,7 @@ export const Flashcard = ({ card, onRate, initialAnswerMode = false, onAnswerMod
                   letterSpacing: '-0.01em',
                 }}
               >
-                Your answer: {lastTypedAnswer}
+                You answered: {lastTypedAnswer}
               </div>
             )}
           </div>
