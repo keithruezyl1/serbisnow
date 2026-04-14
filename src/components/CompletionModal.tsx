@@ -1,16 +1,65 @@
+interface CompletionModalProps {
+  allDone: boolean;
+  completedCount: number;
+  totalCount: number;
+  onNext: () => void;
+}
 
-export const CompletionModal = ({ allDone, completedCount, totalCount, onNext }: any) => {
+export const CompletionModal = ({ allDone, completedCount, totalCount, onNext }: CompletionModalProps) => {
+  const progress = totalCount > 0 ? Math.max(0, Math.min(1, completedCount / totalCount)) : 0;
+  const size = 148;
+  const stroke = 14;
+  const r = (size - stroke) / 2;
+  const c = 2 * Math.PI * r;
+  const dashOffset = c * (1 - progress);
+
   return (
     <div className="overlay">
       <div className="modal" style={{ textAlign: 'center', borderColor: 'rgba(255,255,255,0.12)' }}>
         <h2 style={{ fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', marginBottom: 10, color: 'var(--outline-default)' }}>
           Congratulations!
         </h2>
-        <p style={{ fontSize: '1.05rem', marginBottom: 20, color: 'var(--text-secondary)' }}>
-          You have completed the current queue.
-        </p>
-        <p style={{ fontSize: '1.25rem', marginBottom: 20, fontWeight: 900 }}>
-          Total Progress: {completedCount} / {totalCount}
+
+        <div className="completion-ring" role="img" aria-label={`Total progress: ${completedCount} of ${totalCount}`}>
+          <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="completion-ring__svg">
+            <defs>
+              <linearGradient id="completionRingStroke" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="rgba(99, 102, 241, 1)" />
+                <stop offset="55%" stopColor="rgba(236, 72, 153, 1)" />
+                <stop offset="100%" stopColor="rgba(250, 204, 21, 1)" />
+              </linearGradient>
+            </defs>
+            <circle
+              className="completion-ring__track"
+              cx={size / 2}
+              cy={size / 2}
+              r={r}
+              fill="none"
+              strokeWidth={stroke}
+            />
+            <circle
+              className="completion-ring__progress"
+              cx={size / 2}
+              cy={size / 2}
+              r={r}
+              fill="none"
+              stroke="url(#completionRingStroke)"
+              strokeWidth={stroke}
+              strokeLinecap="round"
+              strokeDasharray={`${c} ${c}`}
+              strokeDashoffset={dashOffset}
+            />
+          </svg>
+          <div className="completion-ring__center">
+            <div className="completion-ring__value">{Math.round(progress * 100)}%</div>
+            <div className="completion-ring__sub">
+              {completedCount} / {totalCount}
+            </div>
+          </div>
+        </div>
+
+        <p style={{ fontSize: '1.05rem', margin: '14px 0 18px', color: 'var(--text-secondary)' }}>
+          Ready to start the next batch?
         </p>
         
         {!allDone ? (
@@ -18,7 +67,7 @@ export const CompletionModal = ({ allDone, completedCount, totalCount, onNext }:
             onClick={onNext} 
             className="cta"
           >
-            Start Next 20
+            I'm ready
           </button>
         ) : (
           <div style={{ color: 'var(--outline-correct)', fontSize: '1.5rem', fontWeight: 'bold' }}>
