@@ -58,12 +58,20 @@ export const Flashcard = ({ card, onRate, initialAnswerMode = false, onAnswerMod
 
   const normalize = (str: string) => str.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, ' ').trim();
   const tokenize = (str: string) => normalize(str).split(' ').filter(Boolean);
+  const stemToken = (t: string) => {
+    // Lightweight plural normalization for "incomplete" detection (e.g., section <-> sections).
+    if (t.endsWith('ies') && t.length > 3) return `${t.slice(0, -3)}y`;
+    if (t.endsWith('es') && t.length > 2) return t.slice(0, -2);
+    if (t.endsWith('s') && t.length > 1) return t.slice(0, -1);
+    return t;
+  };
+  const tokensLooselyEqual = (a: string, b: string) => stemToken(a) === stemToken(b);
 
   const isSubsequence = (needle: string[], haystack: string[]) => {
     if (needle.length === 0) return false;
     let j = 0;
     for (let i = 0; i < haystack.length && j < needle.length; i++) {
-      if (haystack[i] === needle[j]) j++;
+      if (tokensLooselyEqual(haystack[i], needle[j])) j++;
     }
     return j === needle.length;
   };
@@ -77,7 +85,7 @@ export const Flashcard = ({ card, onRate, initialAnswerMode = false, onAnswerMod
     const matchedCorrectIdx = new Set<number>();
     let j = 0;
     for (let i = 0; i < correctTokens.length && j < typedTokens.length; i++) {
-      if (correctTokens[i] === typedTokens[j]) {
+      if (tokensLooselyEqual(correctTokens[i], typedTokens[j])) {
         matchedCorrectIdx.add(i);
         j++;
       }
@@ -152,6 +160,18 @@ export const Flashcard = ({ card, onRate, initialAnswerMode = false, onAnswerMod
                 ? renderHighlightedCorrectAnswer(lastTypedAnswer, card.front)
                 : card.front}
             </p>
+            {answerCheckState === 'incorrect' && lastTypedAnswer.trim().length > 0 && (
+              <div
+                style={{
+                  marginTop: 10,
+                  opacity: 0.6,
+                  fontSize: '0.95rem',
+                  letterSpacing: '-0.01em',
+                }}
+              >
+                Your answer: {lastTypedAnswer}
+              </div>
+            )}
           </div>
         )}
 
