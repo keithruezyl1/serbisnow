@@ -547,18 +547,19 @@ button:disabled {
   pointer-events: none;
 }
 
-.completion-ring__value {
-  font-weight: 950;
-  letter-spacing: -0.03em;
-  font-size: 1.65rem;
-  color: rgba(255,255,255,0.96);
-  text-shadow: 0 8px 20px rgba(0,0,0,0.45);
-}
-
 .completion-ring__sub {
   margin-top: -4px;
   font-size: 0.95rem;
   opacity: 0.7;
+}
+
+.completion-ring__sub--only {
+  margin-top: 0;
+  opacity: 0.92;
+  font-weight: 900;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  text-align: center;
 }
 
 @keyframes completionRingGlow {

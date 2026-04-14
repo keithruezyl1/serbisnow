@@ -62,19 +62,18 @@ export const CompletionModal = ({ allDone, completedCount, totalCount, batchElap
             />
           </svg>
           <div className="completion-ring__center">
-            <div className="completion-ring__value">{Math.round(progress * 100)}%</div>
-            <div className="completion-ring__sub">
+            <div className="completion-ring__sub completion-ring__sub--only">
               {completedCount} / {totalCount}
             </div>
           </div>
         </div>
 
-        <p style={{ fontSize: '1.05rem', margin: '14px 0 18px', color: 'var(--text-secondary)' }}>
-          Ready to start the next batch?
+        <p style={{ fontSize: '1.02rem', margin: '14px 0 10px', opacity: 0.8 }}>
+          Total time: {formatDuration(batchElapsedMs)}
         </p>
 
-        <p style={{ fontSize: '1.02rem', margin: '-8px 0 18px', opacity: 0.8 }}>
-          Total time: {formatDuration(batchElapsedMs)}
+        <p style={{ fontSize: '1.05rem', margin: '0 0 18px', color: 'var(--text-secondary)' }}>
+          Ready to start the next batch?
         </p>
         
         {!allDone ? (
