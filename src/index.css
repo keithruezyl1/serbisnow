@@ -227,12 +227,15 @@ button:disabled {
 }
 
 .progress-pill {
+  --tx: 0px;
+  --ty: 0px;
   width: 100%;
   min-width: 0;
   height: clamp(6px, 1.8vw, 8px);
   border-radius: 999px;
   opacity: 0.6;
-  transition: opacity 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  transform: translate3d(var(--tx), var(--ty), 0);
+  transition: opacity 0.2s ease, box-shadow 0.2s ease, transform 0.22s ease;
 }
 
 .progress-pill.current {
@@ -240,7 +243,7 @@ button:disabled {
   box-shadow:
     0 0 0 2px rgba(255, 255, 255, 0.95),
     0 0 10px rgba(255, 255, 255, 0.55);
-  transform: scaleY(1.15);
+  transform: translate3d(var(--tx), var(--ty), 0) scaleY(1.15);
 }
 
 /* Flashcard */
