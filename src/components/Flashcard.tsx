@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import type { SessionCard } from '../types';
 import { RatingControls } from './RatingControls';
 import { TypedAnswerInput } from './TypedAnswerInput';
-import { Keyboard, Check, X, AlertTriangle } from 'lucide-react';
+import { Keyboard } from 'lucide-react';
 
 interface FlashcardProps {
   card: SessionCard;
@@ -27,7 +27,7 @@ export const Flashcard = ({ card, onRate, initialAnswerMode = false, onAnswerMod
   }, [card.id, initialAnswerMode]);
 
   const executeFlip = useCallback(() => {
-    if (isRevealed || isFlipping || isAnswerModeOpen) return;
+    if (isRevealed || isFlipping) return;
     setIsFlipping(true);
     setTimeout(() => {
       setIsRevealed(true);
@@ -35,7 +35,7 @@ export const Flashcard = ({ card, onRate, initialAnswerMode = false, onAnswerMod
     setTimeout(() => {
       setIsFlipping(false);
     }, 300);
-  }, [isRevealed, isFlipping, isAnswerModeOpen]);
+  }, [isRevealed, isFlipping]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -132,7 +132,7 @@ export const Flashcard = ({ card, onRate, initialAnswerMode = false, onAnswerMod
   return (
     <div className="card-shell">
       <div 
-        onClick={() => !isRevealed && !isAnswerModeOpen && executeFlip()}
+        onClick={() => !isRevealed && executeFlip()}
         className="flashcard"
         style={{
           border: `3px solid ${outlineColor}`,
@@ -141,37 +141,6 @@ export const Flashcard = ({ card, onRate, initialAnswerMode = false, onAnswerMod
           transform: isFlipping ? 'rotateX(90deg)' : 'rotateX(0deg)',
         }}
       >
-        {isRevealed && answerCheckState !== 'idle' && (
-          <div
-            className={[
-              'answer-chip',
-              answerCheckState === 'correct' ? 'answer-chip--correct' : '',
-              answerCheckState === 'incorrect' ? 'answer-chip--incorrect' : '',
-              answerCheckState === 'incomplete' ? 'answer-chip--incomplete' : '',
-            ].join(' ')}
-            aria-live="polite"
-          >
-            {answerCheckState === 'correct' && (
-              <>
-                <Check size={18} strokeWidth={3} />
-                Correct
-              </>
-            )}
-            {answerCheckState === 'incorrect' && (
-              <>
-                <X size={18} strokeWidth={3} />
-                Incorrect
-              </>
-            )}
-            {answerCheckState === 'incomplete' && (
-              <>
-                <AlertTriangle size={18} strokeWidth={2.5} />
-                Incomplete
-              </>
-            )}
-          </div>
-        )}
-
         <h2 style={{ opacity: isRevealed ? 0.72 : 1 }}>
           {card.back}
         </h2>
