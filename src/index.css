@@ -7,6 +7,7 @@
   --outline-default: #fcd34d;
   --outline-correct: #4ade80;
   --outline-incorrect: #f87171;
+  --outline-incomplete: #fef08a;
   --btn-bad: #ef4444;
   --btn-ok: #fef08a;     
   --btn-good: #4ade80;
@@ -300,6 +301,51 @@ button:disabled {
 
 .flashcard .kbd-toggle:active {
   transform: translateY(1px);
+}
+
+.flashcard .answer-chip {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 0.9rem;
+  letter-spacing: -0.01em;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.35);
+  pointer-events: none;
+}
+
+.flashcard .answer-chip--correct {
+  background-color: rgba(74, 222, 128, 0.12);
+  border: 2px solid var(--outline-correct);
+  color: var(--outline-correct);
+}
+
+.flashcard .answer-chip--incorrect {
+  background-color: rgba(248, 113, 113, 0.12);
+  border: 2px solid var(--outline-incorrect);
+  color: var(--outline-incorrect);
+}
+
+.flashcard .answer-chip--incomplete {
+  background-color: rgba(254, 240, 138, 0.12);
+  border: 2px solid var(--outline-incomplete);
+  color: var(--outline-incomplete);
+}
+
+.flashcard .answer-highlight {
+  display: inline-block;
+  padding: 0 0.18em;
+  border-radius: 0.35em;
+  background: rgba(74, 222, 128, 0.24);
+  color: rgba(255,255,255,0.98);
 }
 
 .helper-row {
